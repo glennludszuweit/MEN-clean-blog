@@ -7,17 +7,26 @@ const bodyParser = require("body-parser");
 const BlogPost = require("./models/BlogPost.js");
 const fileUpload = require("express-fileupload");
 
-mongoose.connect("mongodb://localhost/node-blog", { useNewUrlParser: true });
-
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(fileUpload());
 
+//////Server
+mongoose.connect("mongodb://localhost/node-blog", { useNewUrlParser: true });
 app.listen(4000, () => {
   console.log("Server running on PORT 4000...");
 });
+
+//////Middlewares
+const validateMiddleware = (req, res, next) => {
+  if (req.files == null || req.body.title == null || req.body.title == null) {
+    return res.redirect("/post/new");
+  }
+  next();
+};
+app.use("/posts/store", validateMiddleware);
 
 app.get("/", async (req, res) => {
   const blogposts = await BlogPost.find({});
