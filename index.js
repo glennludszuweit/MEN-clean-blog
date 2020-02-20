@@ -3,10 +3,8 @@ const app = new express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
-const path = require("path");
-const ejs = require("ejs");
-const BlogPost = require("./models/BlogPost.js");
 const expressSession = require("express-session");
+const flash = require("connect-flash");
 
 const homeController = require("./controllers/home");
 const newPostController = require("./controllers/newPost");
@@ -27,11 +25,13 @@ app.set("view engine", "ejs");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(fileUpload());
+app.use(flash());
 app.use(
   expressSession({
     secret: "keyboard cat"
   })
 );
+
 app.use("/posts/store", validateMiddleware);
 
 global.loggedIn = null;
