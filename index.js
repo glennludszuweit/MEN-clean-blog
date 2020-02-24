@@ -32,8 +32,6 @@ app.use(
   })
 );
 
-app.use("/posts/store", validateMiddleware);
-
 global.loggedIn = null;
 app.use("*", (req, res, next) => {
   loggedIn = req.session.userId;
@@ -45,10 +43,17 @@ app.listen(4000, () => {
   console.log("Server running on PORT 4000...");
 });
 
+app.use("/posts/store", validateMiddleware);
+
 app.get("/", homeController);
 app.get("/post/:id", getPostController);
 app.get("/posts/new", authMiddleware, newPostController);
-app.post("/posts/store", authMiddleware, storePostController);
+app.post(
+  "/posts/store",
+  authMiddleware,
+  validateMiddleware,
+  storePostController
+);
 app.get("/auth/register", redirectIfAuthMiddleware, newUserController);
 app.post("/users/register", redirectIfAuthMiddleware, storeUserController);
 app.get("/auth/login", redirectIfAuthMiddleware, loginController);

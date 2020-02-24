@@ -3,9 +3,8 @@ const Schema = mongoose.Schema;
 
 const BlogPostSchema = new Schema({
   title: String,
-  description: String,
   body: String,
-  userName: String,
+  username: String,
   datePosted: {
     type: Date,
     default: new Date()
@@ -14,5 +13,4 @@ const BlogPostSchema = new Schema({
 });
 
 const BlogPost = mongoose.model("BlogPost", BlogPostSchema);
-
 module.exports = BlogPost;
