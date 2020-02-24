@@ -17,6 +17,7 @@ module.exports = (req, res) => {
     }
 
     return res.render("create", {
+      createPost: true,
       titleError: titleError,
       descriptionError: descriptionError,
       imageError: imageError
